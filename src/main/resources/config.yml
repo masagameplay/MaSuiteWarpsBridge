@@ -1,0 +1,5 @@
+warp-sign:
+  first: "" # First line
+  second: "&9Teleportation" # Second line
+  third: "&r%warp%" # Third line
+  fourth: "" # Fourth line
