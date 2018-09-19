@@ -1,3 +1,4 @@
+warmup: 3 #In seconds, change 0 to remove warmup
 warp-sign:
   first: "" # First line
   second: "&9Teleportation" # Second line

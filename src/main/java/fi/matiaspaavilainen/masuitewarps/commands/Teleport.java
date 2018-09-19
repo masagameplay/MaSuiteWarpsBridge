@@ -3,6 +3,7 @@ package fi.matiaspaavilainen.masuitewarps.commands;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import fi.matiaspaavilainen.masuitewarps.MaSuiteWarps;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +19,7 @@ public class Teleport implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if(!(cs instanceof Player)){
+        if (!(cs instanceof Player)) {
             return false;
         }
         if (args.length == 1) {
@@ -29,7 +30,7 @@ public class Teleport implements CommandExecutor {
             out.writeUTF(args[0]);
             p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
             return true;
-        }else if(args.length == 2){
+        } else if (args.length == 2) {
             Player p = (Player) cs;
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF("WarpPlayerCommand");
