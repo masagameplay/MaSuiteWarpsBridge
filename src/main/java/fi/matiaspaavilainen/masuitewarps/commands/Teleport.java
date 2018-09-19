@@ -29,6 +29,16 @@ public class Teleport implements CommandExecutor {
             out.writeUTF(args[0]);
             p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
             return true;
+        }else if(args.length == 2){
+            Player p = (Player) cs;
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF("WarpPlayerCommand");
+            out.writeUTF(args[1]);
+            out.writeUTF(p.getName());
+            out.writeUTF(args[0]);
+
+            p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+            return true;
         }
         return false;
     }
