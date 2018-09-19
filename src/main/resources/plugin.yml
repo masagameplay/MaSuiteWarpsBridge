@@ -12,3 +12,6 @@ commands:
   delwarp:
     description: Deletes warp point
     aliases: [warpdel, deletewarp]
+  warps:
+    description: Lists all available warps
+    aliases: [listwarps, warplist]
