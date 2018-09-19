@@ -10,10 +10,10 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-public class PluginMessageListener implements org.bukkit.plugin.messaging.PluginMessageListener {
+public class WarpMessageListener implements org.bukkit.plugin.messaging.PluginMessageListener {
      private MaSuiteWarps plugin;
 
-    PluginMessageListener(MaSuiteWarps p) {
+    WarpMessageListener(MaSuiteWarps p) {
         plugin = p;
     }
 
