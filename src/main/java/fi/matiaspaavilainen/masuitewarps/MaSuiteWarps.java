@@ -1,5 +1,6 @@
 package fi.matiaspaavilainen.masuitewarps;
 
+import fi.matiaspaavilainen.masuitewarps.commands.Set;
 import fi.matiaspaavilainen.masuitewarps.commands.Teleport;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,5 +19,6 @@ public class MaSuiteWarps extends JavaPlugin {
 
     private void registerCommands(){
         getCommand("warp").setExecutor(new Teleport(this));
+        getCommand("setwarp").setExecutor(new Set(this));
     }
 }

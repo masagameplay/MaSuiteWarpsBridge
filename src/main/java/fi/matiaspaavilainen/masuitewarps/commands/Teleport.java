@@ -18,6 +18,9 @@ public class Teleport implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        if(!(cs instanceof Player)){
+            return false;
+        }
         if (args.length == 1) {
             Player p = (Player) cs;
             ByteArrayDataOutput out = ByteStreams.newDataOutput();

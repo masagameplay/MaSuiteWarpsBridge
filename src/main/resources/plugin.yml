@@ -6,3 +6,6 @@ commands:
   warp:
     description: Warps player to specified location
     aliases: [warpto]
+  setwarp:
+    description: Creates warp point
+    aliases: [warpset, createwarp]
