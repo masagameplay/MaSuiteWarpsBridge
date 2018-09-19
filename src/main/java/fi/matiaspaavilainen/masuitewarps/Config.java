@@ -27,7 +27,7 @@ public class Config {
         File syntaxFile = new File(plugin.getDataFolder(), "syntax.yml");
         if (!messageFile.exists()) {
             messageFile.getParentFile().mkdirs();
-            plugin.saveResource("custom.yml", false);
+            plugin.saveResource("messages.yml", false);
         }
         if (!syntaxFile.exists()) {
             syntaxFile.getParentFile().mkdirs();
