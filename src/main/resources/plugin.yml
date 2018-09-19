@@ -9,3 +9,6 @@ commands:
   setwarp:
     description: Creates warp point
     aliases: [warpset, createwarp]
+  delwarp:
+    description: Deletes warp point
+    aliases: [warpdel, deletewarp]
