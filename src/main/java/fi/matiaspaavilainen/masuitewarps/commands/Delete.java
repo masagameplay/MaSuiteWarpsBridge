@@ -3,6 +3,7 @@ package fi.matiaspaavilainen.masuitewarps.commands;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import fi.matiaspaavilainen.masuitewarps.MaSuiteWarps;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,6 +29,8 @@ public class Delete implements CommandExecutor {
             out.writeUTF(p.getName());
             out.writeUTF(args[0]);
             p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+        }else{
+            cs.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getSyntaxes().getString("warp.delete")));
         }
         return false;
     }

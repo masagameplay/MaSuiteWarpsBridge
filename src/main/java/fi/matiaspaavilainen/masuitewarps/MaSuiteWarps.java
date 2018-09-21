@@ -10,13 +10,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.UUID;
 
 public class MaSuiteWarps extends JavaPlugin implements Listener {
 
-    public static HashMap<UUID, Long> warmups = new HashMap<>();
-    private Config config = new Config(this);
+    public static HashSet<UUID> warmups = new HashSet();
+    public static HashSet<String> warps = new HashSet<>();
+    public Config config = new Config(this);
     @Override
     public void onEnable() {
         super.onEnable();
@@ -39,7 +40,7 @@ public class MaSuiteWarps extends JavaPlugin implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         if(getConfig().getInt("warmup") > 0){
-            if (warmups.containsKey(e.getPlayer().getUniqueId())) {
+            if (warmups.contains(e.getPlayer().getUniqueId())) {
                 e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getMessages().getString("teleportation-cancelled")));
                 warmups.remove(e.getPlayer().getUniqueId());
             }

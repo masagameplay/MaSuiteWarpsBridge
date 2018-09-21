@@ -22,7 +22,7 @@ public class List implements CommandExecutor {
             return false;
         }
         Player p = (Player) cs;
-        if (args.length == 1) {
+        if (args.length == 0) {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF("ListWarps");
             out.writeUTF(p.getName());

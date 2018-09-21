@@ -3,6 +3,7 @@ package fi.matiaspaavilainen.masuitewarps.commands;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import fi.matiaspaavilainen.masuitewarps.MaSuiteWarps;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -44,6 +45,8 @@ public class Set implements CommandExecutor {
                 out.writeUTF(args[1]);
                 p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
             }
+        }else{
+            cs.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getSyntaxes().getString("warp.set")));
         }
         return false;
     }
