@@ -26,35 +26,39 @@ public class Teleport implements CommandExecutor {
         if (args.length == 1) {
             Player p = (Player) cs;
             if (checkWarp(cs, args[0])) {
-                if (plugin.getConfig().getInt("warmup") > 0) {
-                    MaSuiteWarps.warmups.add(p.getUniqueId());
-                    cs.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getMessages().getString("teleportation-started").replace("%time%", String.valueOf(plugin.getConfig().getInt("warmup")))));
-                    new Countdown(plugin.getConfig().getInt("warmup"), plugin) {
-                        @Override
-                        public void count(int current) {
-                            if (current == 0) {
-                                if (MaSuiteWarps.warmups.contains(p.getUniqueId())) {
-                                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                                    out.writeUTF("WarpCommand");
-                                    out.writeUTF(p.getName());
-                                    out.writeUTF(args[0]);
-                                    p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
-                                    MaSuiteWarps.warmups.remove(p.getUniqueId());
+                if (checkCooldown(p)) {
+                    if (plugin.getConfig().getInt("warmup") > 0) {
+                        MaSuiteWarps.warmups.add(p.getUniqueId());
+                        cs.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getMessages().getString("teleportation-started").replace("%time%", String.valueOf(plugin.getConfig().getInt("warmup")))));
+                        new Countdown(plugin.getConfig().getInt("warmup"), plugin) {
+                            @Override
+                            public void count(int current) {
+                                if (current == 0) {
+                                    if (MaSuiteWarps.warmups.contains(p.getUniqueId())) {
+                                        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                                        out.writeUTF("WarpCommand");
+                                        out.writeUTF(p.getName());
+                                        out.writeUTF(args[0]);
+                                        p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                                        MaSuiteWarps.warmups.remove(p.getUniqueId());
+                                    }
                                 }
                             }
+                        }.start();
+                        return true;
+                    } else {
+                        if (checkWarp(cs, args[0])) {
+                            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                            out.writeUTF("WarpCommand");
+                            out.writeUTF(p.getName());
+                            out.writeUTF(args[0]);
+                            p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                            return true;
                         }
-                    }.start();
-                } else {
-                    if (MaSuiteWarps.warps.contains(args[0])) {
-                        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                        out.writeUTF("WarpCommand");
-                        out.writeUTF(p.getName());
-                        out.writeUTF(args[0]);
-                        p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
                     }
                 }
             }
-            return true;
+
         } else if (args.length == 2) {
             if (checkWarp(cs, args[0])) {
                 Player p = (Player) cs;
@@ -80,5 +84,22 @@ public class Teleport implements CommandExecutor {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getMessages().getString("warp-not-found")));
             return false;
         }
+    }
+
+    private Boolean checkCooldown(Player p) {
+        if (plugin.getConfig().getInt("cooldown") > 0) {
+            if (MaSuiteWarps.cooldowns.containsKey(p.getUniqueId())) {
+                if (System.currentTimeMillis() - MaSuiteWarps.cooldowns.get(p.getUniqueId()) > plugin.getConfig().getInt("cooldown") * 1000) {
+                    MaSuiteWarps.cooldowns.remove(p.getUniqueId());
+                    return true;
+                } else {
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getMessages().getString("in-cooldown").replace("%time%", plugin.getConfig().getString("cooldown"))));
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        }
+        return true;
     }
 }
