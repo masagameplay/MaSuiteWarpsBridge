@@ -61,6 +61,5 @@ public class MaSuiteWarps extends JavaPlugin implements Listener {
             System.out.println("[MaSuite] [Warps] Requesting list of warps");
             getServer().sendPluginMessage(this, "BungeeCord", out.toByteArray());
         }, 0, 3000);
-
     }
 }
