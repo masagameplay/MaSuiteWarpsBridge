@@ -25,6 +25,7 @@ public class List implements CommandExecutor {
         if (args.length == 0) {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF("ListWarps");
+            out.writeUTF(plugin.checkPermissions(p));
             out.writeUTF(p.getName());
             p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
         }

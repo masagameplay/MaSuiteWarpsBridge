@@ -8,11 +8,11 @@ public abstract class Countdown {
 
     private int time;
 
-    protected BukkitTask task;
+    private BukkitTask task;
     protected final Plugin plugin;
 
 
-    public Countdown(int time, Plugin plugin) {
+    protected Countdown(int time, Plugin plugin) {
         this.time = time;
         this.plugin = plugin;
     }

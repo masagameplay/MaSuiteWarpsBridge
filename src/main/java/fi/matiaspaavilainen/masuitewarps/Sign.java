@@ -2,7 +2,6 @@ package fi.matiaspaavilainen.masuitewarps;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,10 +14,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class Sign implements Listener {
 
-    MaSuiteWarps plugin;
+    private MaSuiteWarps plugin;
 
     public Sign(MaSuiteWarps p) {
         plugin = p;
@@ -39,9 +39,9 @@ public class Sign implements Listener {
             return;
         }
         if (e.getLine(1).equalsIgnoreCase("[Warp]") && e.getLine(2) != null) {
-            String warpline = e.getLine(2);
+            String warpLine = e.getLine(2);
             for (int i = 0; i < 4; i++) {
-                e.setLine(i, colorize(formats()[i].replace("%warp%", warpline)));
+                e.setLine(i, colorize(formats()[i].replace("%warp%", warpLine)));
             }
         }
     }
@@ -52,21 +52,30 @@ public class Sign implements Listener {
             return;
         }
         Player p = e.getPlayer();
-        if (p.hasPermission("masuitewarps.warp.sign.use")) {
-            Block b = e.getClickedBlock();
-            if (b.getType() == Material.SIGN_POST || b.getType() == Material.WALL_SIGN) {
-                org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
-                if (checkSign(sign)) {
-                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                    out.writeUTF("WarpSign");
-                    out.writeUTF(p.getName());
-                    out.writeUTF(ChatColor.stripColor(sign.getLine(getWarpLine())));
-                    p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+        Block b = e.getClickedBlock();
+        if (b.getType() == Material.SIGN_POST || b.getType() == Material.WALL_SIGN) {
+            org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
+            if (checkSign(sign)) {
+                StringJoiner types = new StringJoiner("");
+                if (p.hasPermission("masuitewarps.warp.sign.global")) {
+                    types.add("GLOBAL");
                 }
-
+                if (p.hasPermission("masuitewarps.warp.sign.server")) {
+                    types.add("SERVER");
+                }
+                if (p.hasPermission("masuitewarps.warp.sign.hidden")) {
+                    types.add("HIDDEN");
+                }
+                ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                out.writeUTF("WarpSign");
+                out.writeUTF(types.toString());
+                out.writeUTF(p.getName());
+                out.writeUTF(ChatColor.stripColor(sign.getLine(getWarpLine())));
+                p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
             }
 
         }
+
     }
 
     private int getWarpLine() {

@@ -1,17 +1,20 @@
 name: MaSuiteWarpsBridge
 main: fi.matiaspaavilainen.masuitewarps.MaSuiteWarps
-version: 1.4.1
+version: 1.4.3
 author: Masagameplay
 commands:
   warp:
     description: Warps player to specified location
     aliases: [warpto]
+    permission: masuitewarps.warp
   setwarp:
     description: Creates warp point
     aliases: [warpset, createwarp]
+    permission: masuitewarps.setwarp
   delwarp:
     description: Deletes warp point
     aliases: [warpdel, deletewarp]
+    permission: masuitewarps.delwarp
   warps:
     description: Lists all available warps
     aliases: [listwarps, warplist]

@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class Teleport implements CommandExecutor {
 
@@ -36,11 +37,7 @@ public class Teleport implements CommandExecutor {
                             public void count(int current) {
                                 if (current == 0) {
                                     if (MaSuiteWarps.warmups.contains(p.getUniqueId())) {
-                                        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                                        out.writeUTF("WarpCommand");
-                                        out.writeUTF(p.getName());
-                                        out.writeUTF(args[0]);
-                                        p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                                        send(args, p, plugin);
                                         MaSuiteWarps.warmups.remove(p.getUniqueId());
                                     }
                                 }
@@ -49,11 +46,8 @@ public class Teleport implements CommandExecutor {
                         return true;
                     } else {
                         if (checkWarp(cs, args[0])) {
-                            ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                            out.writeUTF("WarpCommand");
-                            out.writeUTF(p.getName());
-                            out.writeUTF(args[0]);
-                            p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+
+                            send(args, p, plugin);
                             return true;
                         }
                     }
@@ -61,20 +55,39 @@ public class Teleport implements CommandExecutor {
             }
 
         } else if (args.length == 2) {
-            if (checkWarp(cs, args[0])) {
-                ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                out.writeUTF("WarpPlayerCommand");
-                out.writeUTF(args[1]);
-                out.writeUTF("console");
-                out.writeUTF(args[0]);
+            if(cs.hasPermission("masuitewarps.warp.others")) {
+                if (checkWarp(cs, args[0])) {
+                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                    out.writeUTF("WarpPlayerCommand");
+                    out.writeUTF(args[1]);
+                    out.writeUTF("console");
+                    out.writeUTF(args[0]);
 
-                Bukkit.getServer().sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                    Bukkit.getServer().sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                    return true;
+                }
+            } else {
+                cs.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getMessages().getString("no-permission")));
+                return false;
             }
-            return true;
         } else {
             cs.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getSyntaxes().getString("warp.teleport")));
+            return false;
         }
         return false;
+    }
+
+    private void send(String[] args, Player p, Plugin plugin) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("WarpCommand");
+        if(p.hasPermission("masuitewarps.warp.hidden")){
+            out.writeUTF("HIDDEN");
+        } else{
+            out.writeUTF("-------");
+        }
+        out.writeUTF(p.getName());
+        out.writeUTF(args[0]);
+        p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
     }
 
     private Boolean checkWarp(CommandSender p, String name) {
