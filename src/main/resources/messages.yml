@@ -3,3 +3,4 @@ teleportation-started: "&7You will be teleported in &a%time%&7 seconds! &cDont m
 warp-not-found: "&cThat warp point does not exists!"
 in-cooldown: "&cYou can warp after %time% seconds"
 no-permission: "&cNo permission"
+on-active-command: "You have already a command in progress, try it agein in few seconds"
