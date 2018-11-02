@@ -7,6 +7,7 @@ import fi.matiaspaavilainen.masuitewarps.commands.List;
 import fi.matiaspaavilainen.masuitewarps.commands.Set;
 import fi.matiaspaavilainen.masuitewarps.commands.Teleport;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.StringJoiner;
@@ -25,6 +27,7 @@ public class MaSuiteWarps extends JavaPlugin implements Listener {
     public static HashSet<String> warps = new HashSet<>();
     public static HashMap<UUID, Long> cooldowns = new HashMap<>();
     public Config config = new Config(this);
+	public final java.util.List<CommandSender> in_command = new ArrayList<>();
 
     @Override
     public void onEnable() {
