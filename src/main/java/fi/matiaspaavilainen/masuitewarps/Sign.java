@@ -12,6 +12,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -30,8 +33,6 @@ public class Sign implements Listener {
                 plugin.getConfig().getString("warp-sign.third"),
                 plugin.getConfig().getString("warp-sign.fourth")};
     }
-
-    ;
 
     @EventHandler
     public void onSignPlaced(SignChangeEvent e) {
@@ -66,12 +67,16 @@ public class Sign implements Listener {
                 if (p.hasPermission("masuitewarps.warp.sign.hidden")) {
                     types.add("HIDDEN");
                 }
-                ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                out.writeUTF("WarpSign");
-                out.writeUTF(types.toString());
-                out.writeUTF(p.getName());
-                out.writeUTF(ChatColor.stripColor(sign.getLine(getWarpLine())));
-                p.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                try (ByteArrayOutputStream bs = new ByteArrayOutputStream();
+                     DataOutputStream out = new DataOutputStream(bs)) {
+                    out.writeUTF("WarpSign");
+                    out.writeUTF(types.toString());
+                    out.writeUTF(p.getName());
+                    out.writeUTF(ChatColor.stripColor(sign.getLine(getWarpLine())));
+                    p.sendPluginMessage(plugin, "BungeeCord", bs.toByteArray());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
 
         }

@@ -6,7 +6,7 @@
 
     <groupId>fi.matiaspaavilainen</groupId>
     <artifactId>MaSuiteWarpsBridge</artifactId>
-    <version>1.4.3</version>
+    <version>1.4.3.2</version>
     <build>
         <finalName>MaSuiteWarpsBridge</finalName>
         <defaultGoal>clean package install</defaultGoal>
