@@ -1,6 +1,6 @@
 name: MaSuiteWarpsBridge
 main: fi.matiaspaavilainen.masuitewarps.MaSuiteWarps
-version: 1.4.3.2
+version: 1.4.4
 author: Masagameplay
 commands:
   warp:

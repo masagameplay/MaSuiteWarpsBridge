@@ -54,7 +54,6 @@ public class Teleport implements CommandExecutor {
                                 }
                             }.start();
                             plugin.in_command.remove(cs);
-                            return;
                         } else {
                             if (checkWarp(cs, args[0])) {
                                 send(args, p);
