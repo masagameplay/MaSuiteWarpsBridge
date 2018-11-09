@@ -4,6 +4,7 @@ import fi.matiaspaavilainen.masuitewarps.Countdown;
 import fi.matiaspaavilainen.masuitewarps.MaSuiteWarps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -72,9 +73,9 @@ public class Teleport implements CommandExecutor {
                             out.writeUTF(args[1]);
                             out.writeUTF("console");
                             out.writeUTF(args[0]);
-
                             Player p = Bukkit.getPlayer(args[1]);
                             if (p != null) {
+                                sendLastLoc(p);
                                 p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
                             }
                         } catch (IOException e) {
@@ -101,6 +102,7 @@ public class Teleport implements CommandExecutor {
     }
 
     private void send(String[] args, Player p) {
+        sendLastLoc(p);
         try (ByteArrayOutputStream b = new ByteArrayOutputStream();
              DataOutputStream out = new DataOutputStream(b)) {
             out.writeUTF("WarpCommand");
@@ -144,5 +146,22 @@ public class Teleport implements CommandExecutor {
             }
         }
         return true;
+    }
+
+    private void sendLastLoc(Player p) {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        try {
+            out.writeUTF("MaSuiteTeleports");
+            out.writeUTF("GetLocation");
+            out.writeUTF(p.getName());
+            Location loc = p.getLocation();
+            out.writeUTF(loc.getWorld().getName() + ":" + loc.getX() + ":" + loc.getY() + ":" + loc.getZ() + ":"
+                    + loc.getYaw() + ":" + loc.getPitch());
+            out.writeUTF("DETECTSERVER");
+            p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
