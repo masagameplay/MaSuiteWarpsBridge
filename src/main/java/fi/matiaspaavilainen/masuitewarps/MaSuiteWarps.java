@@ -62,7 +62,13 @@ public class MaSuiteWarps extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         if (warps.isEmpty()) {
-            requestWarps();
+            try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+                 DataOutputStream out = new DataOutputStream(b)) {
+                out.writeUTF("RequestWarps");
+                getServer().getScheduler().runTaskLaterAsynchronously(this, () -> getServer().sendPluginMessage(this, "BungeeCord", b.toByteArray()), 100);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

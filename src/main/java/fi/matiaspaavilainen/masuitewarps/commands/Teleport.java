@@ -149,9 +149,8 @@ public class Teleport implements CommandExecutor {
     }
 
     private void sendLastLoc(Player p) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        try {
+        try (ByteArrayOutputStream b = new ByteArrayOutputStream();
+             DataOutputStream out = new DataOutputStream(b)) {
             out.writeUTF("MaSuiteTeleports");
             out.writeUTF("GetLocation");
             out.writeUTF(p.getName());

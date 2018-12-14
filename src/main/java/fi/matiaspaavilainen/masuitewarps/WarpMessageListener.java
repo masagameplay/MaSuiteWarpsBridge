@@ -29,6 +29,10 @@ public class WarpMessageListener implements org.bukkit.plugin.messaging.PluginMe
                     return;
                 }
                 String[] loc = in.readUTF().split(":");
+                if(Bukkit.getWorld(loc[0]) == null){
+                    System.out.println("[MaSuite] [Warps] [World=" + loc[0] +"] World  could not be found!");
+                    return;
+                }
                 p.teleport(new Location(Bukkit.getWorld(loc[0]),
                         Double.parseDouble(loc[1]),
                         Double.parseDouble(loc[2]),
