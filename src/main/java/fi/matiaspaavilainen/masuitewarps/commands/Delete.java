@@ -44,12 +44,6 @@ public class Delete implements CommandExecutor {
                     out.writeUTF(p.getName());
                     out.writeUTF(args[0]);
                     p.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
-                    MaSuiteWarps.warpNames.remove(args[0]);
-                    MaSuiteWarps.warps.forEach(warp -> {
-                        if (warp.getName().equalsIgnoreCase(args[0])) {
-                            MaSuiteWarps.warps.remove(warp);
-                        }
-                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

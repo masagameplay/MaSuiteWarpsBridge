@@ -56,6 +56,15 @@ public class WarpMessageListener implements org.bukkit.plugin.messaging.PluginMe
                 }
                 MaSuiteWarps.cooldowns.put(p.getUniqueId(), in.readLong());
             }
+            if(subchannel.equals("DelWarp")){
+                String w = in.readUTF();
+                MaSuiteWarps.warpNames.remove(w);
+                for(Warp warp : MaSuiteWarps.warps){
+                    if (warp.getName().equalsIgnoreCase(w)) {
+                        MaSuiteWarps.warps.remove(warp);
+                    }
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
