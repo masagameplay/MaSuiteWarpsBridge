@@ -42,8 +42,12 @@ public class WarpMessageListener implements org.bukkit.plugin.messaging.PluginMe
             }
             if (subchannel.equals("ListWarpsForPlayers")) {
                 String w = in.readUTF().toLowerCase();
-                String[] warps = w.split(":");
-                MaSuiteWarps.warps.addAll(Arrays.asList(warps));
+                String[] warps = w.split("::");
+                for(String warp : warps){
+                    String[] info = warp.split(":");
+                    MaSuiteWarps.warps.add(new Warp(info[0], Boolean.valueOf(info[1]), Boolean.valueOf(info[2])));
+                    MaSuiteWarps.warpNames.add(info[0].toLowerCase());
+                }
             }
             if (subchannel.equals("WarpCooldown")) {
                 Player p = Bukkit.getPlayer(UUID.fromString(in.readUTF()));

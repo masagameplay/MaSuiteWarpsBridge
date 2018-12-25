@@ -21,7 +21,8 @@ import java.util.*;
 public class MaSuiteWarps extends JavaPlugin implements Listener {
 
     public static HashSet<UUID> warmups = new HashSet<>();
-    public static HashSet<String> warps = new HashSet<>();
+    public static HashSet<Warp> warps = new HashSet<>();
+    public static HashSet<String> warpNames = new HashSet<>();
     public static HashMap<UUID, Long> cooldowns = new HashMap<>();
     public Config config = new Config(this);
     public final java.util.List<CommandSender> in_command = new ArrayList<>();
@@ -42,8 +43,10 @@ public class MaSuiteWarps extends JavaPlugin implements Listener {
 
     private void registerCommands() {
         getCommand("warp").setExecutor(new Teleport(this));
+        getCommand("warp").setTabCompleter(new TabCompleter(this));
         getCommand("setwarp").setExecutor(new Set(this));
         getCommand("delwarp").setExecutor(new Delete(this));
+        getCommand("delwarp").setTabCompleter(new TabCompleter(this));
         getCommand("warps").setExecutor(new List(this));
     }
 

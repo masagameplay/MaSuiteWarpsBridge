@@ -120,7 +120,7 @@ public class Teleport implements CommandExecutor {
     }
 
     private Boolean checkWarp(CommandSender cs, String name) {
-        if (MaSuiteWarps.warps.contains(name.toLowerCase())) {
+        if (MaSuiteWarps.warpNames.contains(name.toLowerCase())) {
             return true;
         } else {
             cs.sendMessage(ChatColor.translateAlternateColorCodes('&',
